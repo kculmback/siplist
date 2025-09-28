@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthAuthViewRouteImport } from './routes/auth/$authView'
+import { Route as AccountOnboardingRouteImport } from './routes/account/onboarding'
 import { Route as AccountAccountViewRouteImport } from './routes/account/$accountView'
 import { Route as OrganizationSlugOrganizationViewRouteImport } from './routes/organization/$slug/$organizationView'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthAuthViewRoute = AuthAuthViewRouteImport.update({
   id: '/auth/$authView',
   path: '/auth/$authView',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountOnboardingRoute = AccountOnboardingRouteImport.update({
+  id: '/account/onboarding',
+  path: '/account/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountAccountViewRoute = AccountAccountViewRouteImport.update({
@@ -45,6 +51,7 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account/$accountView': typeof AccountAccountViewRoute
+  '/account/onboarding': typeof AccountOnboardingRoute
   '/auth/$authView': typeof AuthAuthViewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/organization/$slug/$organizationView': typeof OrganizationSlugOrganizationViewRoute
@@ -52,6 +59,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account/$accountView': typeof AccountAccountViewRoute
+  '/account/onboarding': typeof AccountOnboardingRoute
   '/auth/$authView': typeof AuthAuthViewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/organization/$slug/$organizationView': typeof OrganizationSlugOrganizationViewRoute
@@ -60,6 +68,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account/$accountView': typeof AccountAccountViewRoute
+  '/account/onboarding': typeof AccountOnboardingRoute
   '/auth/$authView': typeof AuthAuthViewRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/organization/$slug/$organizationView': typeof OrganizationSlugOrganizationViewRoute
@@ -69,6 +78,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account/$accountView'
+    | '/account/onboarding'
     | '/auth/$authView'
     | '/api/auth/$'
     | '/organization/$slug/$organizationView'
@@ -76,6 +86,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/account/$accountView'
+    | '/account/onboarding'
     | '/auth/$authView'
     | '/api/auth/$'
     | '/organization/$slug/$organizationView'
@@ -83,6 +94,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/account/$accountView'
+    | '/account/onboarding'
     | '/auth/$authView'
     | '/api/auth/$'
     | '/organization/$slug/$organizationView'
@@ -91,6 +103,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountAccountViewRoute: typeof AccountAccountViewRoute
+  AccountOnboardingRoute: typeof AccountOnboardingRoute
   AuthAuthViewRoute: typeof AuthAuthViewRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   OrganizationSlugOrganizationViewRoute: typeof OrganizationSlugOrganizationViewRoute
@@ -110,6 +123,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/$authView'
       fullPath: '/auth/$authView'
       preLoaderRoute: typeof AuthAuthViewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/onboarding': {
+      id: '/account/onboarding'
+      path: '/account/onboarding'
+      fullPath: '/account/onboarding'
+      preLoaderRoute: typeof AccountOnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account/$accountView': {
@@ -139,6 +159,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountAccountViewRoute: AccountAccountViewRoute,
+  AccountOnboardingRoute: AccountOnboardingRoute,
   AuthAuthViewRoute: AuthAuthViewRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   OrganizationSlugOrganizationViewRoute: OrganizationSlugOrganizationViewRoute,

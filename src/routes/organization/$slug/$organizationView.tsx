@@ -6,10 +6,10 @@ export const Route = createFileRoute('/organization/$slug/$organizationView')({
 });
 
 function RouteComponent() {
-  const { organizationView } = Route.useParams();
+  const { organizationView, slug } = Route.useParams();
   return (
-    <main className="container p-4 md:p-6">
-      <OrganizationView pathname={organizationView} />
+    <main className="container mx-auto p-4 md:p-6">
+      <OrganizationView slug={slug} pathname={organizationView} />
     </main>
   );
 }

@@ -6,6 +6,8 @@ import {
   Scripts,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
+import { AppSidebar } from '@/components/app-sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/sonner';
 import Header from '../components/Header';
 import StoreDevtools from '../lib/demo-store-devtools';
@@ -49,9 +51,17 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
 
       <body>
-        <Header />
+        <SidebarProvider>
+          <SidebarInset>
+            <Header />
 
-        {children}
+            {children}
+          </SidebarInset>
+
+          <div className="md:hidden">
+            <AppSidebar side="right" />
+          </div>
+        </SidebarProvider>
 
         <Toaster />
 
