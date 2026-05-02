@@ -1,0 +1,7 @@
+{
+  "name": "@siplist/tsconfig",
+  "private": true,
+  "files": [
+    "*.json"
+  ]
+}
