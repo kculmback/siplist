@@ -15,7 +15,7 @@ export function AuthShowcase() {
         onClick={async () => {
           const res = await authClient.signIn.social({
             provider: "discord",
-            callbackURL: "/",
+            callbackURL: window.location.href,
           });
           if (!res.data?.url) {
             throw new Error("No URL returned from signInSocial");

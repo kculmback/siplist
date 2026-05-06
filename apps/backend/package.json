@@ -1,0 +1,40 @@
+{
+  "name": "@siplist/backend",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --env-file ../../.env",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path .prettierignore",
+    "lint": "eslint --flag unstable_native_nodejs_ts_config",
+    "typecheck": "tsc --noEmit",
+    "clean": "git clean -xdf .cache dist node_modules",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@hono/trpc-server": "^0.4.2",
+    "@siplist/api": "workspace:*",
+    "@siplist/auth": "workspace:*",
+    "@siplist/db": "workspace:*",
+    "@t3-oss/env-core": "^0.13.8",
+    "@trpc/server": "catalog:",
+    "better-auth": "catalog:",
+    "hono": "^4.12.16",
+    "superjson": "2.2.3",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@siplist/eslint-config": "workspace:*",
+    "@siplist/prettier-config": "workspace:*",
+    "@siplist/tailwind-config": "workspace:*",
+    "@siplist/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:",
+    "wrangler": "catalog:"
+  },
+  "prettier": "@siplist/prettier-config"
+}

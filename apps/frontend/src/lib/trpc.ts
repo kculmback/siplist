@@ -4,52 +4,48 @@ import {
   createTRPCClient,
   httpBatchStreamLink,
   loggerLink,
-  unstable_localLink,
 } from "@trpc/client";
 import { createTRPCContext } from "@trpc/tanstack-react-query";
 import SuperJSON from "superjson";
 
-import * as Api from "@siplist/api";
+import type { AppRouter } from "@siplist/api";
 
-import { auth } from "~/auth/server";
 import { env } from "~/env";
-import { getBaseUrl } from "~/lib/url";
+import { getBackendUrl } from "~/lib/url";
 
-export const makeTRPCClient = createIsomorphicFn()
+const forwardServerHeaders = createIsomorphicFn()
   .server(() => {
-    return createTRPCClient<Api.AppRouter>({
-      links: [
-        unstable_localLink({
-          router: Api.appRouter,
-          transformer: SuperJSON,
-          createContext: () => {
-            const headers = new Headers(getRequestHeaders());
-            headers.set("x-trpc-source", "tanstack-start-server");
-            return Api.createTRPCContext({ auth, headers });
-          },
-        }),
-      ],
-    });
+    const incoming = new Headers(getRequestHeaders());
+    const headers = new Headers();
+    headers.set("x-trpc-source", "tanstack-start-server");
+    const cookie = incoming.get("cookie");
+    if (cookie) headers.set("cookie", cookie);
+    return headers;
   })
   .client(() => {
-    return createTRPCClient<Api.AppRouter>({
-      links: [
-        loggerLink({
-          enabled: (op) =>
-            env.NODE_ENV === "development" ||
-            (op.direction === "down" && op.result instanceof Error),
-        }),
-        httpBatchStreamLink({
-          transformer: SuperJSON,
-          url: getBaseUrl() + "/api/trpc",
-          headers() {
-            const headers = new Headers();
-            headers.set("x-trpc-source", "tanstack-start-client");
-            return headers;
-          },
-        }),
-      ],
-    });
+    const headers = new Headers();
+    headers.set("x-trpc-source", "tanstack-start-client");
+    return headers;
   });
 
-export const { useTRPC, TRPCProvider } = createTRPCContext<Api.AppRouter>();
+export function makeTRPCClient() {
+  return createTRPCClient<AppRouter>({
+    links: [
+      loggerLink({
+        enabled: (op) =>
+          env.NODE_ENV === "development" ||
+          (op.direction === "down" && op.result instanceof Error),
+      }),
+      httpBatchStreamLink({
+        transformer: SuperJSON,
+        url: `${getBackendUrl()}/api/trpc`,
+        headers: () => forwardServerHeaders(),
+        fetch(url, init) {
+          return fetch(url, { ...init, credentials: "include" });
+        },
+      }),
+    ],
+  });
+}
+
+export const { useTRPC, TRPCProvider } = createTRPCContext<AppRouter>();

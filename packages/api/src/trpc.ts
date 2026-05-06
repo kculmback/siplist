@@ -11,7 +11,7 @@ import superjson from "superjson";
 import { z, ZodError } from "zod/v4";
 
 import type { Auth } from "@siplist/auth";
-import { db } from "@siplist/db/client";
+import type { Db } from "@siplist/db/client";
 
 /**
  * 1. CONTEXT
@@ -29,6 +29,7 @@ import { db } from "@siplist/db/client";
 export const createTRPCContext = async (opts: {
   headers: Headers;
   auth: Auth;
+  db: Db;
 }) => {
   const authApi = opts.auth.api;
   const session = await authApi.getSession({
@@ -37,7 +38,7 @@ export const createTRPCContext = async (opts: {
   return {
     authApi,
     session,
-    db,
+    db: opts.db,
   };
 };
 /**

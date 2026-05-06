@@ -5,7 +5,7 @@ import { reactConfig } from "@siplist/eslint-config/react";
 
 export default defineConfig(
   {
-    ignores: [".nitro/**", ".output/**", ".tanstack/**"],
+    ignores: [".output/**", ".tanstack/**"],
   },
   baseConfig,
   reactConfig,

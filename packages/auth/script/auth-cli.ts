@@ -10,6 +10,8 @@
  * For actual authentication usage, import from "../src/index.ts" instead.
  */
 
+import { createDb } from "@siplist/db/client";
+
 import { initAuth } from "../src/index";
 
 /**
@@ -19,8 +21,10 @@ import { initAuth } from "../src/index";
  * @warning Use the main auth configuration from "../src/index.ts" for your application.
  */
 export const auth = initAuth({
-  baseUrl: "http://localhost:3000",
-  productionUrl: "http://localhost:3000",
+  db: createDb("postgres://cli@localhost/cli"),
+  baseUrl: "http://localhost:8787",
+  productionUrl: "http://localhost:8787",
+  frontendUrl: "http://localhost:3001",
   secret: "secret",
   discordClientId: "1234567890",
   discordClientSecret: "1234567890",

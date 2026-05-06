@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "backend",
+  "main": "src/index.ts",
+  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_date": "2026-05-02",
+  "vars": {
+    "FRONTEND_URL": "http://localhost:3001",
+    "PRODUCTION_URL": "http://localhost:8787",
+    // Secrets below — placeholder values for type generation only.
+    // Override locally via apps/backend/.dev.vars and in production via `wrangler secret put`.
+    "POSTGRES_URL": "",
+    "AUTH_SECRET": "",
+    "AUTH_DISCORD_ID": "",
+    "AUTH_DISCORD_SECRET": "",
+  },
+}

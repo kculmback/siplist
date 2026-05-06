@@ -4,13 +4,15 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { oAuthProxy } from "better-auth/plugins";
 
-import { db } from "@siplist/db/client";
+import type { Db } from "@siplist/db/client";
 
 export function initAuth<
   TExtraPlugins extends BetterAuthPlugin[] = [],
 >(options: {
+  db: Db;
   baseUrl: string;
   productionUrl: string;
+  frontendUrl: string;
   secret: string | undefined;
 
   discordClientId: string;
@@ -18,7 +20,7 @@ export function initAuth<
   extraPlugins?: TExtraPlugins;
 }) {
   const config = {
-    database: drizzleAdapter(db, {
+    database: drizzleAdapter(options.db, {
       provider: "pg",
     }),
     baseURL: options.baseUrl,
@@ -37,7 +39,7 @@ export function initAuth<
         redirectURI: `${options.productionUrl}/api/auth/callback/discord`,
       },
     },
-    trustedOrigins: ["expo://"],
+    trustedOrigins: ["expo://", options.frontendUrl],
     onAPIError: {
       onError(error, ctx) {
         console.error("BETTER AUTH API ERROR", error, ctx);

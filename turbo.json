@@ -51,6 +51,10 @@
     "AUTH_DISCORD_SECRET",
     "AUTH_REDIRECT_PROXY_URL",
     "AUTH_SECRET",
+    "BACKEND_URL",
+    "VITE_BACKEND_URL",
+    "FRONTEND_URL",
+    "PRODUCTION_URL",
     "PORT"
   ],
   "globalPassThroughEnv": [
