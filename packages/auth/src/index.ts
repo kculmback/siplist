@@ -25,6 +25,9 @@ export function initAuth<
     }),
     baseURL: options.baseUrl,
     secret: options.secret,
+    emailAndPassword: {
+      enabled: true,
+    },
     plugins: [
       oAuthProxy({
         productionURL: options.productionUrl,
@@ -33,11 +36,11 @@ export function initAuth<
       ...(options.extraPlugins ?? []),
     ],
     socialProviders: {
-      discord: {
-        clientId: options.discordClientId,
-        clientSecret: options.discordClientSecret,
-        redirectURI: `${options.productionUrl}/api/auth/callback/discord`,
-      },
+      // discord: {
+      //   clientId: options.discordClientId,
+      //   clientSecret: options.discordClientSecret,
+      //   redirectURI: `${options.productionUrl}/api/auth/callback/discord`,
+      // },
     },
     trustedOrigins: ["expo://", options.frontendUrl],
     onAPIError: {

@@ -64,8 +64,8 @@ The Hono backend (`apps/backend`) is the **only** place the tRPC server runs. Bo
 
 ### Validators (`packages/validators`) and UI (`packages/ui`)
 
-- Use `@siplist/validators` for Zod schemas shared between client and server. Project uses **Zod v4** — note imports use `zod/v4`.
-- `@siplist/ui` is shadcn-based; each component is a separate subpath export (e.g. `@siplist/ui/button`). Add new ones via `pnpm ui-add`.
+- Use `@siplist/validators` for Zod schemas shared between client and server. Project uses **Zod v4** — note imports use `zod`.
+- `@siplist/ui` is shadcn-based, organized into three subpath patterns (see `packages/ui/package.json` `exports`): `@siplist/ui/components/<name>` (`.tsx`), `@siplist/ui/hooks/<name>` (`.ts`), and `@siplist/ui/lib/<name>` (`.ts`). Add components via `pnpm ui-add`.
 
 ### Tooling packages
 

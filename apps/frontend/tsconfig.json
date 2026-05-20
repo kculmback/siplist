@@ -3,10 +3,12 @@
   "compilerOptions": {
     "lib": ["ES2022", "dom", "dom.iterable"],
     "jsx": "preserve",
+    "baseUrl": ".",
     "paths": {
-      "~/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "@siplist/ui/*": ["../../packages/ui/src/*"],
+    },
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

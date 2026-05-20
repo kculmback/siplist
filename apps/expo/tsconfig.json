@@ -5,8 +5,8 @@
     "checkJs": false,
     "moduleSuffixes": [".ios", ".android", ".native", ""],
     "paths": {
-      "~/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+    },
   },
   "include": [
     "src",
@@ -14,7 +14,7 @@
     "*.js",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
+    "nativewind-env.d.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

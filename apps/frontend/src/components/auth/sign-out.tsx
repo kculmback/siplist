@@ -1,0 +1,50 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { useAuth, useSignOut } from "@better-auth-ui/react";
+import { toast } from "sonner";
+
+import { Spinner } from "@siplist/ui/components/spinner";
+import { cn } from "@siplist/ui/lib/utils";
+
+export interface SignOutProps {
+  className?: string;
+}
+
+/**
+ * Signs the current user out on mount and renders a centered spinner while the operation completes.
+ *
+ * @param className - Optional additional class names appended to the root element
+ * @returns The spinner shown during sign-out
+ */
+export function SignOut({ className }: SignOutProps) {
+  const { authClient, basePaths, navigate, viewPaths } = useAuth();
+
+  const { mutate: signOut } = useSignOut(authClient, {
+    onError: (error) => {
+      const authError = error.error as { message?: string } | null | undefined;
+      toast.error(authError?.message || error.message);
+
+      navigate({
+        to: `${basePaths.auth}/${viewPaths.auth.signIn}`,
+        replace: true,
+      });
+    },
+    onSuccess: () =>
+      navigate({
+        to: `${basePaths.auth}/${viewPaths.auth.signIn}`,
+        replace: true,
+      }),
+  });
+
+  const hasSignedOut = useRef(false);
+
+  useEffect(() => {
+    if (hasSignedOut.current) return;
+    hasSignedOut.current = true;
+
+    signOut();
+  }, [signOut]);
+
+  return <Spinner className={cn("mx-auto my-auto", className)} />;
+}

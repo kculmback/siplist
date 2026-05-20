@@ -26,6 +26,6 @@ export const auth = initAuth({
   productionUrl: "http://localhost:8787",
   frontendUrl: "http://localhost:3001",
   secret: "secret",
-  discordClientId: "1234567890",
-  discordClientSecret: "1234567890",
+  // discordClientId: "1234567890",
+  // discordClientSecret: "1234567890",
 });

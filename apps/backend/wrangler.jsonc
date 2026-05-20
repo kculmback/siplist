@@ -11,7 +11,7 @@
     // Override locally via apps/backend/.dev.vars and in production via `wrangler secret put`.
     "POSTGRES_URL": "",
     "AUTH_SECRET": "",
-    "AUTH_DISCORD_ID": "",
-    "AUTH_DISCORD_SECRET": "",
+    // "AUTH_DISCORD_ID": "",
+    // "AUTH_DISCORD_SECRET": "",
   },
 }

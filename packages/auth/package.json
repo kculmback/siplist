@@ -20,8 +20,7 @@
     "@better-auth/expo": "catalog:",
     "@siplist/db": "workspace:*",
     "@t3-oss/env-core": "^0.13.8",
-    "better-auth": "catalog:",
-    "zod": "catalog:"
+    "better-auth": "catalog:"
   },
   "devDependencies": {
     "@better-auth/cli": "catalog:",
