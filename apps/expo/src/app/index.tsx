@@ -1,101 +1,96 @@
-import type { RouterOutputs } from "@/utils/api";
-import { useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link, Stack } from "expo-router";
-import { trpc } from "@/utils/api";
+import { Stack } from "expo-router";
 import { authClient } from "@/utils/auth";
-import { LegendList } from "@legendapp/list";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-function PostCard(props: {
-  post: RouterOutputs["post"]["all"][number];
-  onDelete: () => void;
-}) {
-  return (
-    <View className="bg-muted flex flex-row rounded-lg p-4">
-      <View className="grow">
-        <Link
-          asChild
-          href={{
-            pathname: "/post/[id]",
-            params: { id: props.post.id },
-          }}
-        >
-          <Pressable className="">
-            <Text className="text-primary text-xl font-semibold">
-              {props.post.title}
-            </Text>
-            <Text className="text-foreground mt-2">{props.post.content}</Text>
-          </Pressable>
-        </Link>
-      </View>
-      <Pressable onPress={props.onDelete}>
-        <Text className="text-primary font-bold uppercase">Delete</Text>
-      </Pressable>
-    </View>
-  );
-}
+// function PostCard(props: {
+//   post: RouterOutputs["post"]["all"][number];
+//   onDelete: () => void;
+// }) {
+//   return (
+//     <View className="bg-muted flex flex-row rounded-lg p-4">
+//       <View className="grow">
+//         <Link
+//           asChild
+//           href={{
+//             pathname: "/post/[id]",
+//             params: { id: props.post.id },
+//           }}
+//         >
+//           <Pressable className="">
+//             <Text className="text-primary text-xl font-semibold">
+//               {props.post.title}
+//             </Text>
+//             <Text className="text-foreground mt-2">{props.post.content}</Text>
+//           </Pressable>
+//         </Link>
+//       </View>
+//       <Pressable onPress={props.onDelete}>
+//         <Text className="text-primary font-bold uppercase">Delete</Text>
+//       </Pressable>
+//     </View>
+//   );
+// }
 
-function CreatePost() {
-  const queryClient = useQueryClient();
+// function CreatePost() {
+//   const queryClient = useQueryClient();
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+//   const [title, setTitle] = useState("");
+//   const [content, setContent] = useState("");
 
-  const { mutate, error } = useMutation(
-    trpc.post.create.mutationOptions({
-      async onSuccess() {
-        setTitle("");
-        setContent("");
-        await queryClient.invalidateQueries(trpc.post.all.queryFilter());
-      },
-    }),
-  );
+//   const { mutate, error } = useMutation(
+//     trpc.post.create.mutationOptions({
+//       async onSuccess() {
+//         setTitle("");
+//         setContent("");
+//         await queryClient.invalidateQueries(trpc.post.all.queryFilter());
+//       },
+//     }),
+//   );
 
-  return (
-    <View className="mt-4 flex gap-2">
-      <TextInput
-        className="border-input bg-background text-foreground items-center rounded-md border px-3 text-lg leading-tight"
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Title"
-      />
-      {error?.data?.zodError?.fieldErrors.title && (
-        <Text className="text-destructive mb-2">
-          {error.data.zodError.fieldErrors.title}
-        </Text>
-      )}
-      <TextInput
-        className="border-input bg-background text-foreground items-center rounded-md border px-3 text-lg leading-tight"
-        value={content}
-        onChangeText={setContent}
-        placeholder="Content"
-      />
-      {error?.data?.zodError?.fieldErrors.content && (
-        <Text className="text-destructive mb-2">
-          {error.data.zodError.fieldErrors.content}
-        </Text>
-      )}
-      <Pressable
-        className="bg-primary flex items-center rounded-sm p-2"
-        onPress={() => {
-          mutate({
-            title,
-            content,
-          });
-        }}
-      >
-        <Text className="text-foreground">Create</Text>
-      </Pressable>
-      {error?.data?.code === "UNAUTHORIZED" && (
-        <Text className="text-destructive mt-2">
-          You need to be logged in to create a post
-        </Text>
-      )}
-    </View>
-  );
-}
+//   return (
+//     <View className="mt-4 flex gap-2">
+//       <TextInput
+//         className="border-input bg-background text-foreground items-center rounded-md border px-3 text-lg leading-tight"
+//         value={title}
+//         onChangeText={setTitle}
+//         placeholder="Title"
+//       />
+//       {/*{error?.data?.zodError?.fieldErrors.title && (
+//         <Text className="text-destructive mb-2">
+//           {error.data.zodError.fieldErrors.title}
+//         </Text>
+//       )}*/}
+//       <TextInput
+//         className="border-input bg-background text-foreground items-center rounded-md border px-3 text-lg leading-tight"
+//         value={content}
+//         onChangeText={setContent}
+//         placeholder="Content"
+//       />
+//       {/*{error?.data?.zodError?.fieldErrors.content && (
+//         <Text className="text-destructive mb-2">
+//           {error.data.zodError.fieldErrors.content}
+//         </Text>
+//       )}*/}
+//       {/*<Pressable
+//         className="bg-primary flex items-center rounded-sm p-2"
+//         onPress={() => {
+//           mutate({
+//             title,
+//             content,
+//           });
+//         }}
+//       >
+//         <Text className="text-foreground">Create</Text>
+//       </Pressable>*/}
+//       {/*{error?.data?.code === "UNAUTHORIZED" && (
+//         <Text className="text-destructive mt-2">
+//           You need to be logged in to create a post
+//         </Text>
+//       )}*/}
+//     </View>
+//   );
+// }
 
 function MobileAuth() {
   const { data: session } = authClient.useSession();
@@ -123,16 +118,16 @@ function MobileAuth() {
 }
 
 export default function Index() {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
 
-  const postQuery = useQuery(trpc.post.all.queryOptions());
+  // const postQuery = useQuery(trpc.post.all.queryOptions());
 
-  const deletePostMutation = useMutation(
-    trpc.post.delete.mutationOptions({
-      onSettled: () =>
-        queryClient.invalidateQueries(trpc.post.all.queryFilter()),
-    }),
-  );
+  // const deletePostMutation = useMutation(
+  //   trpc.post.delete.mutationOptions({
+  //     onSettled: () =>
+  //       queryClient.invalidateQueries(trpc.post.all.queryFilter()),
+  //   }),
+  // );
 
   return (
     <SafeAreaView className="bg-background">
@@ -151,7 +146,7 @@ export default function Index() {
           </Text>
         </View>
 
-        <LegendList
+        {/*<LegendList
           data={postQuery.data ?? []}
           estimatedItemSize={20}
           keyExtractor={(item) => item.id}
@@ -162,9 +157,9 @@ export default function Index() {
               onDelete={() => deletePostMutation.mutate(p.item.id)}
             />
           )}
-        />
+        />*/}
 
-        <CreatePost />
+        {/*<CreatePost />*/}
       </View>
     </SafeAreaView>
   );

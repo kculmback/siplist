@@ -39,6 +39,7 @@ export const createTRPCContext = async (opts: {
     authApi,
     session,
     db: opts.db,
+    headers: opts.headers,
   };
 };
 /**

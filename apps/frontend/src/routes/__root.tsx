@@ -2,6 +2,7 @@
 import type { QueryClient } from "@tanstack/react-query";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import type * as React from "react";
+import { useEffect } from "react";
 import { authClient } from "@/auth/client";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { Navigation } from "@/components/navigation/navigation";
@@ -45,6 +46,17 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const { data: sessionData } = authClient.useSession();
+  const { refetch: refetchOrg } = authClient.useActiveOrganization();
+
+  // Better Auth only toggles $activeOrgSignal for /organization/* paths. After signup
+  // or login the session refreshes (via $sessionSignal) with activeOrganizationId set,
+  // but useActiveOrganization never re-fetches. Manually refetch when the ID appears.
+  useEffect(() => {
+    if (sessionData?.session.activeOrganizationId) {
+      void refetchOrg();
+    }
+  }, [sessionData?.session.activeOrganizationId, refetchOrg]);
 
   return (
     <ThemeProvider>

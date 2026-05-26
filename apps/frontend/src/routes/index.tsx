@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { authClient } from "@/auth/client";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
@@ -10,12 +11,15 @@ export const Route = createFileRoute("/")({
 });
 
 function RouteComponent() {
+  const { data: activeOrganization } = authClient.useActiveOrganization();
+  console.log(activeOrganization);
   return (
     <main className="container h-screen py-16">
       <div className="flex flex-col items-center justify-center gap-4">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Create <span className="text-primary">T3</span> Turbo
+          {activeOrganization?.name}
         </h1>
+
         {/*<AuthShowcase />*/}
 
         {/*<CreatePostForm />*/}
