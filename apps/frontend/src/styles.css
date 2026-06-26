@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @import "@siplist/tailwind-config/theme";
 
 @import "@fontsource-variable/source-sans-3";
