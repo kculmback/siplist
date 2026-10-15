@@ -15,10 +15,11 @@ Repo-specific gotchas for `/design-sync`. Append a bullet whenever the run learn
 - Output lives at `packages/ui/.cache/ds-sync/` (gitignored; inside packages/ui because `cfg.cssEntry` is bounded to the package dir). **Re-run `bash .design-sync/build-css.sh` before the converter on any re-sync** (the driver does not run buildCmd itself).
 - The temp Tailwind entry is written transiently into `apps/frontend/.ds-styles.input.css` (so bare `@import`s resolve via the frontend's node_modules) and removed by the script. Also `@source`s `.design-sync/previews/*` so any Tailwind classes used in authored preview layout glue get compiled.
 
-## Repo fix applied during sync (base-ui orientation attribute)
-- `@base-ui/react@1.5.0` emits `data-orientation="horizontal"|"vertical"`, but `slider.tsx`, `separator.tsx`, `tabs.tsx`, and one rule in `field.tsx` styled orientation with `data-horizontal:` / `data-vertical:` Tailwind variants (which compile to `[data-horizontal]` / `[data-vertical]` — never matched). Result before the fix: Slider track/range invisible, Separator line invisible, Tabs laid out in a row instead of stacking. **This affected the real app, not just the sync.**
-- Fix applied (with user approval): replaced `data-horizontal` → `data-[orientation=horizontal]` and `data-vertical` → `data-[orientation=vertical]` in those four files. Verified the rendered cards are now correct. Committed with the sync.
-- **If base-ui is upgraded again**, re-check these attribute names — a future rename would silently break orientation styling the same way.
+## Orientation attribute — resolved by shadcn/tailwind.css (2025-06)
+- `@base-ui/react@1.5.0` emits `data-orientation="horizontal"|"vertical"`, and component source uses `data-horizontal:` / `data-vertical:` Tailwind variants. These compile to `[data-horizontal]` / `[data-vertical]` without the shadcn variant definitions — never matching.
+- **Resolution:** `@import "shadcn/tailwind.css"` in `apps/frontend/src/styles.css` defines `@custom-variant data-horizontal { &:where([data-orientation="horizontal"]) }` and `data-vertical` equivalently. Adding this import to `build-css.sh` ensures the design-sync compiled CSS includes these variant definitions.
+- This is the correct shadcn approach. A prior sync applied a source-level fix (replacing `data-horizontal:` with `data-[orientation=horizontal]:`) which was correctly reverted when shadcn components were updated. The CSS-level fix is more robust.
+- **build-css.sh already has `@import "shadcn/tailwind.css"`.** Do not remove it.
 
 ## Preview authoring — base-ui component constraints
 - **`DropdownMenuLabel` requires `DropdownMenuGroup` context.** `DropdownMenuLabel` wraps `Menu.GroupLabel` (base-ui), which throws `MenuGroupContext is missing` when rendered outside a `<Menu.Group>`. The error is async (React 18 concurrent) so the try/catch in the card harness doesn't surface it — the cell just renders blank. Always wrap label + its items in `<DropdownMenuGroup>`.

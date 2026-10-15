@@ -21,6 +21,7 @@ INPUT="apps/frontend/.ds-styles.input.css"
 cat > "$INPUT" <<'CSS'
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "shadcn/tailwind.css";
 @import "@siplist/tailwind-config/theme";
 @import "@fontsource-variable/source-sans-3";
 
