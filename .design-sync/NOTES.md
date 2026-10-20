@@ -31,8 +31,9 @@ Repo-specific gotchas for `/design-sync`. Append a bullet whenever the run learn
 - **Tailwind CLI version**: `build-css.sh` pins `@tailwindcss/cli@4.2.4` (matches the catalog `tailwindcss`). If the repo bumps Tailwind, bump the pin in the script too, or the compiled utilities may diverge from what the app actually renders.
 - **Font subset**: only the variable Source Sans 3 subsets referenced by the compiled `@font-face` ship. If a preview needs italic/other subsets, confirm they're in `fonts/`.
 
-## Environment setup (learned 2026-10-19 re-sync)
-- `pnpm` may not be on PATH. Install with `COREPACK_ENABLE_DOWNLOAD_PROMPT=0 corepack pnpm@10.19.0 i --frozen-lockfile` (the `sherif` postinstall then fails with `pnpm: command not found`, which is harmless). With no `node_modules`, `build-css.sh` dies on `Can't resolve 'tailwindcss'` and leaves `apps/frontend/.ds-styles.input.css` behind. Install first.
+## Environment setup
+- Node and pnpm come from **asdf** (`.tool-versions`: nodejs 22.21.0, pnpm 10.19.0; the repo moved off nvm on 2026-10-19). A shell started before asdf was set up won't have `~/.asdf/shims` on PATH (`node: command not found`), so prefix `PATH="$HOME/.asdf/shims:$PATH"`.
+- With no `node_modules`, `build-css.sh` dies on `Can't resolve 'tailwindcss'` and leaves `apps/frontend/.ds-styles.input.css` behind. Run `pnpm i --frozen-lockfile` first.
 - The repo has no playwright. Install it into `.ds-sync/` (`npm i playwright@1.64.1`), which pins chromium-1248 and matches the cached `~/Library/Caches/ms-playwright/chromium-1248`.
 
 ## Conventions header corrections (2026-10-19)
