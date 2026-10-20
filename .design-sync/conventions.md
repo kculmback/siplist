@@ -20,11 +20,11 @@ All colour, radius, and spacing tokens are available as CSS variables on `:root`
 | `--destructive` | Red — delete / error states |
 | `--radius` | Base border-radius (components multiply this) |
 
-Font: **Source Sans 3** (variable, 300–900). Set on `body` automatically; use `font-sans` to apply it inside a component.
+Font: **Source Sans 3** (variable, 200–900). Set on `body` automatically; use `font-sans` to apply it inside a component.
 
 ## ThemeProvider
 
-Wrap any subtree that uses CSS-variable tokens in `<ThemeProvider>`. All colours above resolve against the provider's current theme (light or dark). **Never render themed components without ThemeProvider in a design** — token values will be absent and the component will render unstyled.
+The tokens above are defined globally on `:root` (light) and `.dark` in `styles.css`, so components are styled with or without a provider. `<ThemeProvider>` handles theme switching: it sets `.light`/`.dark`/`.auto` on `<html>` (default `auto` follows the OS). Without it, designs always render in the light theme. Wrap the app root in it whenever the design needs dark mode or a theme switch.
 
 ```jsx
 <ThemeProvider>
@@ -32,7 +32,7 @@ Wrap any subtree that uses CSS-variable tokens in `<ThemeProvider>`. All colours
 </ThemeProvider>
 ```
 
-`ThemeToggle` must also live inside a `ThemeProvider`.
+`ThemeToggle` reads the provider's context, so it **must** live inside a `ThemeProvider`.
 
 ## base-ui composition rules
 
