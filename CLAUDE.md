@@ -8,7 +8,7 @@ Before substantial work, follow the skill-loading workflow in [`AGENTS.md`](./AG
 
 ## Stack
 
-T3-Turbo monorepo (Turborepo + pnpm workspaces). Apps share a tRPC v11 router, Drizzle/Postgres schema, and a Better Auth setup. Engines: Node `^22.21.0`, pnpm `^10.19.0` (enforced in `package.json`).
+T3-Turbo monorepo (Turborepo + pnpm workspaces). Apps share a tRPC v11 router, Drizzle/Postgres schema, and a Better Auth setup. Toolchain: Node `22.21.0` and pnpm `10.19.0`, pinned in `.tool-versions` (asdf). `.npmrc` sets `engine-strict=true`.
 
 `@siplist/*` is the workspace scope. Packages reference each other as `workspace:*`.
 
